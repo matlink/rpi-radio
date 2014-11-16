@@ -1,0 +1,54 @@
+#! /bin/bash
+
+### BEGIN INIT INFO
+# Provides: pirate-radio
+# Required-Start: $remote_fs $syslog
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start pirate-radio
+# Description: Start pirate-radio
+### END INIT INFO
+
+DESC="Pirate-Radio"
+NAME=pirate-radio
+#DAEMON=
+script_name=PirateRadio.py
+do_start()
+{
+   echo "starting Pirate radio...";
+   python /pirateradio/$script_name >> /var/log/pirate-radio.log 2>&1 &
+}
+
+do_stop()
+{
+   echo "stopping Pirate radio...";
+   killall pifm;
+   kill -9 $(ps -ef | grep $script_name | grep python | head -1 | cut -d" " -f7); 
+}
+
+do_status(){
+        test=$(ps -ef | grep $script_name|grep python| wc -l );
+        if [ $test -eq 0 ] ; then
+                echo "pirate-radio is not running.";
+                exit 1;
+        else 
+                echo "pirate-radio is running.";
+                exit 0;
+        fi
+
+}
+
+case "$1" in
+   start)
+     do_start
+     ;;
+   stop)
+     do_stop
+     ;;
+   status)
+    do_status
+    ;;
+esac
+
+exit 0;
