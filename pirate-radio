@@ -26,12 +26,13 @@ do_stop()
    echo "stopping Pirate radio...";
    killall pifm;
    kill -9 $(cat /var/run/$NAME.pid);
+   rm -f /var/run/$NAME.pid;
    #kill -9 $(ps -ef | grep $script_name | grep python | head -1 | cut -d" " -f7); 
 }
 
 do_status(){
-        test=$(ps -ef | grep $script_name|grep python| wc -l );
-        if [ $test -eq 0 ] ; then
+        #test=$(ps -ef | grep $script_name|grep python| wc -l );
+        if [ ! -f /var/run/$NAME.pid ] ; then
                 echo "pirate-radio is not running.";
                 exit 1;
         else 
