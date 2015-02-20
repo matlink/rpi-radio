@@ -18,13 +18,15 @@ do_start()
 {
    echo "starting Pirate radio...";
    python /pirateradio/$script_name >> /var/log/pirate-radio.log 2>&1 &
+   echo $! > /var/run/$NAME.pid;
 }
 
 do_stop()
 {
    echo "stopping Pirate radio...";
    killall pifm;
-   kill -9 $(ps -ef | grep $script_name | grep python | head -1 | cut -d" " -f7); 
+   kill -9 $(cat /var/run/$NAME.pid);
+   #kill -9 $(ps -ef | grep $script_name | grep python | head -1 | cut -d" " -f7); 
 }
 
 do_status(){
