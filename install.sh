@@ -11,3 +11,5 @@ sed -i "s@frequency.*@frequency = 88.2@g" ./pirateradio.conf
 sed -i "s@music_dir.*@music_dir = /media/music@g" ./pirateradio.conf
 chmod +x /etc/init.d/pirate-radio
 update-rc.d pirate-radio remove
+mkdir -p /var/run/pirate-radio/
+chmod o+w /var/run/pirate-radio/
