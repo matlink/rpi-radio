@@ -18,7 +18,7 @@ do_start()
 {
    echo "starting Pirate radio...";
    python /pirateradio/$script_name >> /var/log/pirate-radio.log 2>&1 &
-   echo $! > /var/run/$NAME/$NAME.pid;
+   echo $(ps -ef | grep PirateRadio.py | cut -d' ' -f6 | head -n1) > /var/run/$NAME/$NAME.pid;
 }
 
 do_stop()
@@ -27,11 +27,9 @@ do_stop()
    killall pifm;
    kill -9 $(cat /var/run/$NAME/$NAME.pid);
    rm -f /var/run/$NAME/$NAME.pid;
-   #kill -9 $(ps -ef | grep $script_name | grep python | head -1 | cut -d" " -f7); 
 }
 
 do_status(){
-        #test=$(ps -ef | grep $script_name|grep python| wc -l );
         if [ ! -f /var/run/$NAME/$NAME.pid ] ; then
                 echo "pirate-radio is not running.";
                 exit 1;
